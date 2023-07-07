@@ -40,7 +40,7 @@ class DownloadProgressTest extends BddTest {
 
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         this.monitor = new TestMonitor();
     }

@@ -41,7 +41,7 @@ class CustomObjectMapperTest extends BddTest {
 
     @Override
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         customOm = Mockito.spy(ObjectMapper.class);
     }

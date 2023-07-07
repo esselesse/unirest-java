@@ -40,7 +40,7 @@ public class UploadProgressTest extends BddTest {
     private TestMonitor monitor;
 
     @Override @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         this.monitor = new TestMonitor();
     }

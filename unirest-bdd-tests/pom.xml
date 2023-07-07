@@ -35,6 +35,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!-- https://github.com/javalin/javalin-ssl -->
+            <groupId>io.javalin.community.ssl</groupId>
+            <artifactId>ssl-plugin</artifactId>
+            <version>5.6.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-guava</artifactId>
             <version>${jackson.version}</version>

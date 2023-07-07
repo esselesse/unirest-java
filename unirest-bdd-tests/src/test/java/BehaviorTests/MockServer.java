@@ -28,6 +28,7 @@ package BehaviorTests;
 
 import com.google.common.base.Strings;
 import io.javalin.Javalin;
+import io.javalin.community.ssl.SSLPlugin;
 import io.javalin.http.Context;
 
 import io.javalin.http.HttpStatus;
@@ -107,8 +108,14 @@ public class MockServer {
     }
 
     static {
+
         app = Javalin.create(c -> {
             c.staticFiles.add("public/");
+            c.plugins.register(new SSLPlugin(conf -> {
+                conf.pemFromClasspath("certs/keystore.pem", "certs/keystore.pem", "password");
+                conf.secure = false;
+                conf.insecurePort = PORT;
+            }));
 
         }).start(PORT);
         app.error(404, MockServer::notFound);

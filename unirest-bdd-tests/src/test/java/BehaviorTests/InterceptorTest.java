@@ -44,7 +44,7 @@ class InterceptorTest extends BddTest {
 
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         super.setUp();
         interceptor = new UniInterceptor("x-custom", "foo");
     }

@@ -28,9 +28,14 @@ package BehaviorTests;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
+import kong.unirest.core.java.SSLContextBuilder;
+import nl.altindag.ssl.SSLFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import javax.net.ssl.SSLContext;
+import java.io.InputStream;
+import java.security.KeyStore;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -41,15 +46,34 @@ public class BddTest {
     private CountDownLatch lock;
     private boolean status;
     private String fail;
+    private KeyStore keyStore;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         Unirest.shutDown(true);
         //TestUtil.debugApache();
         MockServer.reset();
+        KeyStore keystore = readStore();
+
+        SSLContext sslContext = SSLContextBuilder.create()
+                .loadKeyMaterial(keystore, "password".toCharArray())
+                .build();
+
+        Unirest.config().sslContext(sslContext);
+
         Unirest.config().setObjectMapper(objectMapper);
         lock = new CountDownLatch(1);
         status = false;
+    }
+
+    public KeyStore readStore() throws Exception {
+        if(keyStore == null) {
+            try (InputStream keyStoreStream = TestUtil.class.getResourceAsStream("/certs/keystore.p12")) {
+                keyStore = KeyStore.getInstance("PKCS12");
+                keyStore.load(keyStoreStream, "password".toCharArray());
+            }
+        }
+        return keyStore;
     }
 
     @AfterEach
